@@ -201,8 +201,8 @@ const TeaVisuals = (() => {
     el('rect', { x: 0, y: 372, width: 540, height: 5, class: 'counter-edge' }, svg);
 
     const glass = buildGlass(svg, {
-      cx: 170, baseY: 362, scale: 1, volume: 200, capacity: 240,
-      marks: [50, 100, 150, 200], uid: 's1',
+      cx: 170, baseY: 362, scale: 1, volume: 100, capacity: 120,
+      marks: [25, 50, 75, 100], uid: 's1',
     });
     buildSteam(svg, 170, glass.topY, 1);
 

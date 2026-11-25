@@ -299,6 +299,77 @@ input[type="range"]:focus-visible { outline: 3px solid #b9d48f; outline-offset: 
 .gauge-ref span { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); font-size: .7rem; white-space: nowrap; color: var(--muted); }
 .gauge-scale { display: flex; justify-content: space-between; font-size: .75rem; color: var(--muted); margin-top: 2px; }
 
+/* ---------------- สลับโหมด ---------------- */
+.mode-wrap { display: flex; align-items: center; justify-content: center; }
+.mode-switch { display: inline-flex; padding: 4px; gap: 4px; background: #f1efe7; border-radius: 999px; border: 1px solid var(--line); }
+.mode-switch button {
+  border: 0; background: transparent; padding: 7px 14px; border-radius: 999px; cursor: pointer;
+  font-weight: 700; color: var(--muted); white-space: nowrap; transition: background .2s, color .2s;
+}
+.mode-switch button:hover { color: var(--ink); }
+.mode-switch button[aria-checked="true"] { background: #fff; color: var(--matcha-dark); box-shadow: 0 1px 4px rgba(0, 0, 0, .12); }
+body[data-mode="practice"] .mode-switch button[data-mode="practice"][aria-checked="true"] { background: var(--sugar); color: #fff; }
+.mode-switch button:focus-visible { outline: 3px solid #b9d48f; outline-offset: 2px; }
+.mode-locked { font-weight: 700; color: var(--sugar); background: var(--sugar-soft); padding: 6px 14px; border-radius: 999px; }
+.mode-locked small { color: var(--muted); font-weight: 500; }
+
+/* ---------------- การ์ดคำนวณ (ฝั่งแก้ว) ---------------- */
+.stage.stage-flow { position: static; }
+.calc-card { margin-top: 14px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
+.calc-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.calc-head h3 { font-size: 1.05rem; color: var(--matcha-dark); }
+.mode-tag { font-size: .8rem; font-weight: 700; padding: 2px 10px; border-radius: 999px; background: var(--water-soft); color: var(--water); }
+.mode-tag.practice { background: var(--sugar-soft); color: var(--sugar); }
+.mode-tag.done { background: var(--matcha-soft); color: var(--matcha-dark); }
+.practice { margin-bottom: 12px; }
+.practice-intro { margin: 0 0 10px; font-size: .95rem; }
+.practice-intro small { color: var(--muted); }
+
+.pf-row { padding: 10px 12px; border-left: 4px solid var(--line); background: #fafaf6; border-radius: 0 10px 10px 0; margin-bottom: 10px; }
+.pf-row.sugar { border-color: var(--sugar); }
+.pf-row.tea { border-color: var(--tea); }
+.pf-row.is-ok { background: #f2f8ea; }
+.pf-row.is-revealed { background: #f4f7fa; }
+.pf-title { margin: 0 0 6px; font-weight: 700; display: flex; justify-content: space-between; gap: 8px; }
+.pf-status { font-size: .85rem; color: var(--matcha-dark); }
+.pf-row.is-revealed .pf-status { color: var(--water); }
+.pf-formula { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-variant-numeric: tabular-nums; }
+.pf-sym { font-weight: 700; font-size: 1.1rem; }
+.pf-in {
+  width: 74px; padding: 6px 8px; border: 2px solid #d8d3c2; border-radius: 10px; background: #fff;
+  text-align: center; font-weight: 700; font-size: 1.05rem; transition: border-color .15s, background .15s;
+}
+.pf-in.narrow { width: 60px; }
+.pf-in.wide { width: 86px; }
+.pf-in:focus { outline: none; border-color: var(--matcha); box-shadow: 0 0 0 3px #e1eecf; }
+.pf-in.bad { border-color: var(--warn); background: var(--warn-soft); }
+.pf-in:disabled { background: transparent; border-color: transparent; color: var(--ink); }
+.pf-row.is-ok .pf-in:disabled { color: var(--matcha-dark); }
+.pf-fb { margin: 6px 0 0; font-size: .9rem; font-weight: 600; min-height: 0; }
+.pf-fb:empty { display: none; }
+.pf-fb.bad { color: var(--warn); }
+.pf-fb.ok { color: var(--matcha-dark); }
+.pf-fb.info { color: var(--water); }
+.pf-hint { background: #fff8e6; border: 1px dashed #e5c89b; border-radius: 10px; padding: 8px 12px; font-size: .92rem; margin-bottom: 10px; }
+.pf-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.locked-note { margin: 10px 0 0; padding: 8px 12px; border-radius: 10px; background: var(--sugar-soft); font-size: .9rem; }
+
+.how-tag { display: inline-block; font-size: .75rem; font-weight: 700; padding: 0 8px; border-radius: 999px; margin-left: 6px; vertical-align: 1px; }
+.how-tag.self { background: var(--matcha-soft); color: var(--matcha-dark); }
+.how-tag.revealed { background: var(--water-soft); color: var(--water); }
+
+/* ขั้นที่ 2: ช่องกรอกในตาราง */
+.practice2 { margin-top: 14px; padding: 14px; border-radius: 12px; background: #fffdf6; border: 1px dashed #e5c89b; }
+.cell-in { width: 80px; }
+.cell-in.narrow { width: 66px; }
+.row-practice { background: #fffdf6; }
+.p2-fb { list-style: none; margin: 0 0 10px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.p2-fb:empty { display: none; }
+.p2-fb li { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: .92rem; }
+.p2-fb .bad-line { color: var(--warn); }
+.p2-fb .ok-line { color: var(--matcha-dark); }
+.p2-fb .info-line { color: var(--water); }
+
 /* ---------------- ตาราง ---------------- */
 .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; border: 1px solid var(--line); }
 .data-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; min-width: 760px; }
@@ -406,7 +477,139 @@ select:focus { outline: none; border-color: var(--matcha); }
 }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
+/* =========================================================
+ * ธีมเกม
+ * ========================================================= */
+body {
+  background:
+    radial-gradient(circle at 1px 1px, rgba(91, 140, 42, .09) 1.5px, transparent 0) 0 0 / 22px 22px,
+    radial-gradient(1200px 500px at 85% -10%, #e3eed2 0%, transparent 60%),
+    var(--bg);
+}
+.card, .stage { border-width: 2px; box-shadow: 0 4px 0 #e6e0cf, 0 10px 24px rgba(35, 48, 32, .06); }
+.card-title { font-size: 1.15rem; }
+.btn-primary { box-shadow: 0 5px 0 var(--matcha-dark); }
+.btn-primary:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--matcha-dark); }
+.btn-big { letter-spacing: .01em; }
+
+/* stepper แบบด่าน */
+.step-text small { order: -1; font-weight: 700; color: var(--sugar); letter-spacing: .02em; }
+.step-btn.cleared .step-num { background: #f2b630; color: #fff; font-size: 0; }
+.step-btn.cleared .step-num::before { content: '★'; font-size: 18px; }
+.step-btn.locked:not(.active) .step-num { font-size: 0; }
+.step-btn.locked:not(.active) .step-num::before { content: '🔒'; font-size: 15px; }
+
+/* ---------------- กระดานภารกิจ ---------------- */
+.quest-board {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 16px; margin-bottom: 18px; align-items: center;
+}
+.guide { display: flex; align-items: center; gap: 12px; }
+.mascot { width: 88px; height: 88px; flex: none; animation: bob 3.2s ease-in-out infinite; transform-origin: 50% 90%; }
+@keyframes bob { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-5px) rotate(2deg); } }
+.m-shadow { fill: rgba(60, 40, 10, .14); }
+.m-steam { fill: none; stroke: #b7c2b0; stroke-width: 3; stroke-linecap: round; opacity: .8; }
+.m-handle { fill: none; stroke: #e9e4d6; stroke-width: 6; stroke-linecap: round; }
+.m-cup { fill: #fffdf6; stroke: #d6ceb5; stroke-width: 2.5; }
+.m-tea { fill: #8fbf5a; stroke: #6f9f3c; stroke-width: 1.5; }
+.m-cheek { fill: #f6b8a2; opacity: .75; }
+.m-eyes-open circle { fill: #2f3a2b; }
+.m-eyes-open .m-glint { fill: #fff; }
+.m-eyes-happy, .m-mouth { fill: none; stroke: #2f3a2b; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.m-open { fill: #c0462e; }
+.m-eyes-happy, .m-open, .m-sad, .m-think { display: none; }
+.guide[data-mood="happy"] .m-eyes-open, .guide[data-mood="happy"] .m-smile { display: none; }
+.guide[data-mood="happy"] .m-eyes-happy, .guide[data-mood="happy"] .m-open { display: inline; }
+.guide[data-mood="happy"] .mascot { animation: hop .5s ease 2; }
+.guide[data-mood="sad"] .m-smile { display: none; }
+.guide[data-mood="sad"] .m-sad { display: inline; }
+.guide[data-mood="sad"] .mascot { animation: wobble .5s ease; }
+.guide[data-mood="think"] .m-smile { display: none; }
+.guide[data-mood="think"] .m-think { display: inline; }
+@keyframes hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-16px) scale(1.04); } }
+@keyframes wobble { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+
+.bubble {
+  position: relative; flex: 1; min-width: 0;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  background: #fff; border: 2px solid var(--line); border-radius: 18px; padding: 12px 16px;
+  box-shadow: 0 4px 0 #e6e0cf;
+}
+.bubble::before {
+  content: ''; position: absolute; left: -11px; top: calc(50% - 9px); width: 18px; height: 18px;
+  background: #fff; border-left: 2px solid var(--line); border-bottom: 2px solid var(--line);
+  transform: rotate(45deg); border-radius: 0 0 0 4px;
+}
+.bubble-name { font-family: var(--font-head); font-size: .8rem; font-weight: 700; color: #fff; background: var(--matcha); padding: 1px 10px; border-radius: 999px; }
+.bubble p { margin: 0; font-size: 1rem; line-height: 1.55; }
+
+.quest-panel {
+  background: linear-gradient(180deg, #fffaf0, #fff); border: 2px solid #ecd9b3; border-radius: 18px;
+  padding: 12px 16px; box-shadow: 0 4px 0 #efe1c3;
+}
+.quest-head { display: flex; align-items: center; gap: 8px; }
+.quest-head b { flex: 1; min-width: 0; font-family: var(--font-head); font-size: .98rem; line-height: 1.3; }
+.level-tag { flex: none; background: var(--sugar); color: #fff; font-family: var(--font-head); font-weight: 700; font-size: .8rem; padding: 2px 10px; border-radius: 999px; }
+.quest-count { flex: none; font-family: var(--font-head); font-weight: 700; color: var(--sugar); }
+.quest-bar { height: 8px; border-radius: 6px; background: #f1e6cf; margin: 8px 0 6px; overflow: hidden; }
+.quest-bar i { display: block; height: 100%; width: 0; border-radius: 6px; background: linear-gradient(90deg, #f2b630, var(--sugar)); transition: width .5s cubic-bezier(.3, 1.4, .5, 1); }
+.lv-chip { display: inline-block; font-size: .78rem; padding: 1px 8px; border-radius: 999px; background: #f1e6cf; color: var(--muted); margin-left: 3px; white-space: nowrap; }
+.lv-chip.now { background: var(--sugar); color: #fff; }
+.lv-chip.done { background: #f2b630; color: #fff; }
+
+/* ขั้นตอนโจทย์ (มีหมายเลข) */
+.quest-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; font-size: .93rem; }
+.quest-steps li { display: flex; align-items: flex-start; gap: 8px; color: var(--muted); padding: 3px 8px 3px 3px; border-radius: 10px; line-height: 1.4; }
+.quest-steps li small { color: var(--muted); font-weight: 500; }
+.qi-check {
+  flex: none; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%;
+  background: #efe6d2; color: var(--muted); font-size: .8rem; font-weight: 700; font-family: var(--font-head);
+}
+.quest-steps li.done { color: var(--ink); }
+.quest-steps li.done .qi-check { background: var(--matcha); color: #fff; animation: pop .4s ease; }
+.quest-steps li.current { background: #fff1d6; color: var(--ink); font-weight: 600; box-shadow: inset 3px 0 0 var(--sugar); }
+.quest-steps li.current .qi-check { background: var(--sugar); color: #fff; }
+
+/* ขั้นที่ 1: เลือกระดับหวานก่อน */
+.step-badge {
+  display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--matcha); color: #fff; font-size: .9rem;
+}
+.target-card .level-group { margin: 0 0 8px; }
+.target-card .level-btn { flex: 1; min-width: 0; padding: 10px 8px; font-size: 1.05rem; font-family: var(--font-head); border-radius: 14px; box-shadow: 0 3px 0 #e5c89b; }
+.target-card .level-btn.active { box-shadow: 0 3px 0 #8d5713; }
+.level-btn.saved:not(.active)::after { content: ' ★'; color: #f2b630; }
+.target-card.is-current { border-color: var(--sugar); box-shadow: 0 4px 0 #e5c89b, 0 0 0 4px #fbeed8; }
+.target-note { margin: 8px 0 0; padding: 8px 12px; border-radius: 10px; background: var(--sugar-soft); font-size: .95rem; }
+.ing-locked { margin: 0 0 10px; padding: 8px 12px; border-radius: 10px; background: #f4f2ea; color: var(--muted); font-weight: 600; font-size: .92rem; }
+.ingredients-card.is-locked .ingredient { opacity: .45; filter: grayscale(.6); }
+.ingredients-card input:disabled { cursor: not-allowed; }
+
+.pf-row.target { border-color: #f2b630; }
+.pf-target-line { margin: 0; font-size: .95rem; }
+
+/* ---------------- เอฟเฟกต์ ---------------- */
+.pop { animation: pop .35s ease; }
+@keyframes pop { 0% { transform: scale(.9); opacity: .4; } 70% { transform: scale(1.03); } 100% { transform: scale(1); opacity: 1; } }
+.shake { animation: shake .45s ease; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-7px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
+.pf-row.is-ok { animation: pop .4s ease; }
+
+.fx-layer { position: fixed; inset: 0; pointer-events: none; z-index: 60; overflow: hidden; }
+.confetti {
+  position: fixed; top: -14px; width: 9px; height: 14px; border-radius: 2px;
+  animation-name: fall; animation-timing-function: cubic-bezier(.25, .6, .5, 1); animation-fill-mode: forwards;
+}
+@keyframes fall { to { transform: translate(var(--dx), 105vh) rotate(var(--rot)); } }
+
 /* ---------------- Responsive (แท็บเล็ต / จอเล็ก) ---------------- */
+@media (max-width: 920px) {
+  .quest-board { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .mascot { width: 76px; height: 76px; }
+  .bubble p { font-size: .95rem; }
+}
 @media (max-width: 1100px) {
   .work-grid, .questions { grid-template-columns: 1fr 1fr; }
 }
@@ -426,7 +629,69 @@ select:focus { outline: none; border-color: var(--matcha); }
   .compare-box { grid-template-columns: 1fr; text-align: center; }
   .base-summary { grid-template-columns: 1fr 1fr; }
   .step-line { width: 16px; }
+  .mode-switch { width: 100%; }
+  .mode-switch button { flex: 1; padding: 7px 8px; font-size: .9rem; }
+  .pf-in { width: 64px; }
+  .pf-in.narrow { width: 52px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* =========================================================
+ * ด่าน 1: ตัวแปร + สมการแบบเลือกสูตร
+ * ========================================================= */
+.variables { display: flex; flex-direction: column; gap: 4px; margin: 10px 0 0; padding: 10px 12px; border-radius: 12px; background: #f6f8f1; border: 1px dashed #cfdcb9; }
+.var-row { margin: 0; font-size: .92rem; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.var-tag { flex: none; font-size: .76rem; font-weight: 700; padding: 1px 9px; border-radius: 999px; color: #fff; }
+.var-tag.ind { background: var(--sugar); }
+.var-tag.dep { background: var(--water); }
+.var-tag.ctl { background: var(--matcha); }
+.fixed-note { margin: 6px 0 0; font-size: .85rem; color: var(--matcha-dark); font-weight: 600; }
+.ingredient.tea .ing-value b { font-family: var(--font-head); font-size: 1.15rem; background: #fff; padding: 4px 12px; border-radius: 10px; }
+
+.eq-box { background: #fff; border: 2px solid var(--line); border-left-width: 4px; border-left-color: var(--sugar); }
+.eq-toolbar { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.eq-label { font-weight: 600; }
+.type-group { display: flex; gap: 6px; flex: 1; flex-wrap: wrap; }
+.type-btn {
+  display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 10px; cursor: pointer;
+  border: 2px solid #e2ddd0; background: #f1efe8; font-weight: 700; font-size: 1rem; line-height: 1;
+}
+.type-btn:hover:not(:disabled) { border-color: #c9d8b3; }
+.type-btn.active { background: var(--matcha-soft); border-color: var(--matcha); color: var(--matcha-dark); }
+.type-btn.bad { background: var(--warn-soft); border-color: var(--warn); color: var(--warn); }
+.type-btn:disabled { cursor: default; opacity: .7; }
+.type-btn:disabled.active { opacity: 1; }
+.type-btn:focus-visible { outline: 3px solid #b9d48f; outline-offset: 2px; }
+.mini-frac { display: inline-flex; flex-direction: column; align-items: center; font-size: .78em; line-height: 1.05; }
+.mini-frac span:first-child { border-bottom: 1.5px solid currentColor; padding: 0 2px; }
+.btn-round {
+  width: 40px; height: 40px; flex: none; border-radius: 50%; border: 0; cursor: pointer; display: grid; place-items: center;
+  background: #e9e6dc; font-size: 1.15rem; color: var(--muted); transition: background .2s;
+}
+.btn-round:hover:not(:disabled) { background: #dcd8cb; }
+.btn-round[aria-expanded="true"] { background: #ffe58a; }
+.btn-round:disabled { opacity: .45; cursor: not-allowed; }
+.btn-round:focus-visible { outline: 3px solid #b9d48f; outline-offset: 2px; }
+.eq-toolbar .btn-round { margin-left: auto; }
+.eq-formula { margin: 8px 0 4px; font-size: .9rem; min-height: 1.4em; }
+.eq { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 0 6px; flex-wrap: wrap; }
+.eq-sym { font-size: 1.25rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.frac-in { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; }
+.frac-bar { display: block; width: 100%; min-width: 96px; height: 2px; background: var(--ink); border-radius: 1px; }
+.eq .pf-in { width: 92px; height: 46px; font-size: 1.15rem; background: #f1efe8; border-color: #e2ddd0; }
+.eq .pf-in.wide { width: 96px; }
+.eq .pf-in:focus { background: #fff; }
+.eq .pf-in.bad { background: var(--warn-soft); border-color: var(--warn); }
+.eq-actions { justify-content: center; border-top: 1px solid var(--line); padding-top: 12px; }
+.eq-actions .btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; transform: none; }
+.eq-static { justify-content: flex-start; padding: 8px 0 2px; }
+.frac-show { display: inline-flex; flex-direction: column; align-items: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+.frac-show span:first-child { border-bottom: 2px solid var(--ink); padding: 0 8px 2px; }
+.frac-show span:last-child { padding: 2px 8px 0; }
+.work-note { margin: 0; font-size: .85rem; }
+@media (max-width: 560px) {
+  .eq .pf-in { width: 78px; }
+  .frac-bar { min-width: 80px; }
 }

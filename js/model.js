@@ -4,11 +4,14 @@
  *   = มวลตัวละลาย (g) ÷ ปริมาตรสารละลายสุดท้าย (mL) × 100
  * ========================================================= */
 const TeaModel = (() => {
-  /** สูตรอ้างอิง: น้ำตาล 20 g ในเครื่องดื่มปริมาตรสุดท้าย 200 mL */
-  const REFERENCE = Object.freeze({ sugar: 20, volume: 200 });
+  /** สูตรอ้างอิง (หวาน 100%): น้ำตาล 10 g ในเครื่องดื่มปริมาตรสุดท้าย 100 mL (= 10% w/v) */
+  const REFERENCE = Object.freeze({ sugar: 10, volume: 100 });
 
   /** ขั้นที่ 1 ใช้ปริมาตรเครื่องดื่มสุดท้ายคงที่ */
-  const STAGE1_VOLUME = 200;
+  const STAGE1_VOLUME = 100;
+
+  /** ขั้นที่ 1 ใช้ผงชาเท่ากันทุกสูตร (ตัวแปรควบคุม) */
+  const STAGE1_TEA = 2;
 
   /** ระดับหวาน (สัดส่วนเทียบสูตรอ้างอิง) ที่ให้เลือก */
   const SWEET_LEVELS = Object.freeze([25, 50, 100]);
@@ -78,6 +81,7 @@ const TeaModel = (() => {
   return {
     REFERENCE,
     STAGE1_VOLUME,
+    STAGE1_TEA,
     SWEET_LEVELS,
     DISSOLVED_VOLUME_PER_GRAM,
     percentWV,
