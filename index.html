@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ร้านชาเขียวนักวิทย์</title>
+  <meta name="description" content="Simulation เรื่องความเข้มข้นของสารละลาย (% มวลต่อปริมาตร) สำหรับนักเรียน ม.3 ในบริบทการสร้างสูตรมาตรฐานของร้านชาเขียว">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= ส่วนหัว + Stepper ================= -->
+<header class="topbar">
+  <div class="brand">
+    <svg class="brand-icon" viewBox="0 0 40 40" aria-hidden="true">
+      <path d="M8 14h20v10a10 10 0 0 1-20 0z" fill="#7fae45"/>
+      <path d="M28 16h3a4 4 0 0 1 0 8h-3" fill="none" stroke="#3d6420" stroke-width="2.5"/>
+      <path d="M14 4c-2 3 2 4 0 7M20 3c-2 3 2 4 0 7" stroke="#9aa88f" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <h1>ร้านชาเขียวนักวิทย์</h1>
+      <p>Simulation ความเข้มข้นของสารละลาย · วิทยาศาสตร์ ม.3</p>
+    </div>
+  </div>
+
+  <nav class="stepper" role="tablist" aria-label="ขั้นตอนของกิจกรรม">
+    <button class="step-btn" role="tab" id="tab-1" aria-controls="step1" aria-selected="true" data-step="1">
+      <span class="step-num">1</span>
+      <span class="step-text"><b>ทดลองสูตร</b><small>แก้ว 200 mL</small></span>
+    </button>
+    <span class="step-line" aria-hidden="true"></span>
+    <button class="step-btn" role="tab" id="tab-2" aria-controls="step2" aria-selected="false" data-step="2">
+      <span class="step-num">2</span>
+      <span class="step-text"><b>ขยายสูตร</b><small>แก้ว 3 ขนาด</small></span>
+    </button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ================= ขั้นที่ 1 ================= -->
+<section id="step1" class="step" role="tabpanel" aria-labelledby="tab-1">
+
+  <div class="mission">
+    <span class="mission-tag">ภารกิจ</span>
+    <p>ร้านของเรากำลังจะเปิด! ทดลองหาสูตรชาเขียวสำหรับเครื่องดื่ม <b>200 มิลลิลิตร</b>
+      แล้ว <b>บันทึกสูตรระดับหวาน 25%, 50% และ 100%</b> ไว้เป็นสูตรมาตรฐานของร้าน</p>
+  </div>
+
+  <div class="layout">
+    <!-- แผงควบคุม (ซ้าย) -->
+    <div class="panel">
+
+      <div class="card">
+        <h2 class="card-title">ส่วนผสม</h2>
+
+        <!-- น้ำตาล -->
+        <div class="ingredient sugar">
+          <div class="ing-head">
+            <span class="ing-icon" aria-hidden="true">◆</span>
+            <label for="sugar-range">1. น้ำตาล</label>
+            <span class="ing-value"><input type="number" id="sugar-num" min="0" max="30" step="0.5" inputmode="decimal" aria-label="มวลน้ำตาล (กรัม)"> กรัม</span>
+          </div>
+
+          <div class="level-group" role="group" aria-label="ระดับหวานเทียบสูตรอ้างอิง">
+            <span class="level-caption">ระดับหวาน:</span>
+            <button type="button" class="level-btn" data-level="25">25%</button>
+            <button type="button" class="level-btn" data-level="50">50%</button>
+            <button type="button" class="level-btn" data-level="100">100%</button>
+          </div>
+          <input type="range" id="sugar-range" min="0" max="30" step="0.5">
+          <p class="hint">
+            <b>ระดับหวาน 25%, 50%, 100%</b> คือ <u>สัดส่วนเทียบกับสูตรอ้างอิง</u>
+            (น้ำตาล 20 กรัม ต่อเครื่องดื่ม 200 มิลลิลิตร) <b>ไม่ใช่</b>ความเข้มข้นร้อยละโดยตรง
+          </p>
+        </div>
+
+        <!-- ผงชา -->
+        <div class="ingredient tea">
+          <div class="ing-head">
+            <span class="ing-icon" aria-hidden="true">●</span>
+            <label for="tea-range">2. ผงชาเขียวสำเร็จรูป <small class="muted">(ชนิดละลายน้ำ)</small></label>
+            <span class="ing-value"><input type="number" id="tea-num" min="0" max="12" step="0.5" inputmode="decimal" aria-label="มวลผงชา (กรัม)"> กรัม</span>
+          </div>
+          <input type="range" id="tea-range" min="0" max="12" step="0.5">
+        </div>
+
+        <!-- น้ำร้อน -->
+        <div class="ingredient water">
+          <div class="ing-head">
+            <span class="ing-icon" aria-hidden="true">≋</span>
+            <span class="ing-label">3. น้ำร้อน</span>
+            <span class="lock" title="ขั้นนี้ปรับขนาดแก้วไม่ได้">🔒 คงที่</span>
+          </div>
+          <p class="water-box">
+            เติมน้ำร้อนจนได้<b>ปริมาตรสุดท้าย 200 มิลลิลิตร</b><br>
+            <small>น้ำที่ใช้จริงประมาณ <b id="water-approx">–</b> มิลลิลิตร
+              เพราะน้ำตาลและผงชาที่ละลายแล้วก็มีปริมาตรด้วย (ค่าประมาณในแบบจำลอง)</small>
+          </p>
+        </div>
+      </div>
+
+      <div class="card result-card">
+        <h2 class="card-title">ผลการคำนวณ <span class="live-dot" aria-hidden="true"></span></h2>
+        <div class="result-grid">
+          <div class="result sugar">
+            <span class="result-label">ความเข้มข้นน้ำตาล</span>
+            <span class="result-num"><b id="r-sugar">–</b> <small>% (มวล/ปริมาตร)</small></span>
+            <span class="result-sub" id="r-sugar-sub"></span>
+          </div>
+          <div class="result tea">
+            <span class="result-label">ความเข้มข้นผงชา</span>
+            <span class="result-num"><b id="r-tea">–</b> <small>% (มวล/ปริมาตร)</small></span>
+            <span class="result-sub" id="r-tea-sub"></span>
+          </div>
+        </div>
+        <div class="compare-box">
+          <div><span class="chip chip-level">ระดับหวาน</span> <b id="r-level">–</b> <small>ของสูตรอ้างอิง</small></div>
+          <div class="vs">≠</div>
+          <div><span class="chip chip-conc">ความเข้มข้นน้ำตาล</span> <b id="r-level-conc">–</b></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">วิธีคำนวณ (แทนค่า)</h2>
+        <div id="work1" class="work"></div>
+      </div>
+
+      <button type="button" id="save-btn" class="btn btn-primary btn-big">💾 บันทึกสูตร</button>
+    </div>
+
+    <!-- ภาพแก้ว (ขวา) -->
+    <div class="stage">
+      <div class="stage-head">
+        <h2>โต๊ะชงชา</h2>
+        <span class="badge">ปริมาตรสุดท้าย 200 mL</span>
+      </div>
+      <svg id="scene1" class="scene" role="img" aria-label="ภาพแก้วชาเขียวและมุมมองขยายของสารละลาย"></svg>
+
+      <ul class="legend">
+        <li><span class="lg-dot sugar"></span>น้ำตาล</li>
+        <li><span class="lg-dot tea"></span>ผงชา</li>
+        <li class="legend-note">จำนวนจุดในวงกลมแทน<b>ความเข้มข้น</b> ไม่ใช่จำนวนอนุภาคจริง · สีเขียวเข้มขึ้นเมื่อผงชาเข้มข้นขึ้น</li>
+      </ul>
+
+      <div class="recipe-strip">
+        <div class="rs-item sugar"><span>น้ำตาล</span><b id="rs-sugar">–</b><small>กรัม</small></div>
+        <div class="rs-plus">+</div>
+        <div class="rs-item tea"><span>ผงชา</span><b id="rs-tea">–</b><small>กรัม</small></div>
+        <div class="rs-plus">+</div>
+        <div class="rs-item water"><span>น้ำร้อน</span><b>เติมจนครบ</b><small>200 mL</small></div>
+      </div>
+
+      <div class="gauges">
+        <div class="gauge">
+          <div class="gauge-head"><span>น้ำตาล</span><b id="g-sugar-val">–</b></div>
+          <div class="gauge-track"><div class="gauge-fill sugar" id="g-sugar"></div>
+            <div class="gauge-ref" style="left:66.67%" title="สูตรอ้างอิง 10%"><span>สูตรอ้างอิง</span></div></div>
+          <div class="gauge-scale"><span>0%</span><span>15%</span></div>
+        </div>
+        <div class="gauge">
+          <div class="gauge-head"><span>ผงชา</span><b id="g-tea-val">–</b></div>
+          <div class="gauge-track"><div class="gauge-fill tea" id="g-tea"></div></div>
+          <div class="gauge-scale"><span>0%</span><span>6%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ตารางบันทึกสูตร -->
+  <section class="card wide">
+    <div class="card-title-row">
+      <h2 class="card-title">ตารางบันทึกสูตร</h2>
+      <div class="checklist" id="checklist" aria-label="ความคืบหน้าการบันทึกสูตร"></div>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>สูตร</th>
+            <th>ระดับหวาน<br><small>(เทียบสูตรอ้างอิง)</small></th>
+            <th>น้ำตาล<br><small>(กรัม)</small></th>
+            <th>ผงชา<br><small>(กรัม)</small></th>
+            <th>ปริมาตรสุดท้าย<br><small>(มิลลิลิตร)</small></th>
+            <th>ความเข้มข้นน้ำตาล<br><small>(% มวล/ปริมาตร)</small></th>
+            <th>ความเข้มข้นผงชา<br><small>(% มวล/ปริมาตร)</small></th>
+            <th><span class="sr-only">จัดการ</span></th>
+          </tr>
+        </thead>
+        <tbody id="saved-body"></tbody>
+      </table>
+    </div>
+    <p class="empty" id="saved-empty">ยังไม่มีสูตร — ลองกดระดับหวาน 25% แล้วกด “บันทึกสูตร” จากนั้นทำซ้ำกับ 50% และ 100%</p>
+  </section>
+
+  <section class="card wide think">
+    <h2 class="card-title">🤔 คำถามชวนคิด</h2>
+    <div class="questions" data-group="1"></div>
+  </section>
+</section>
+
+<!-- ================= ขั้นที่ 2 ================= -->
+<section id="step2" class="step" role="tabpanel" aria-labelledby="tab-2" hidden>
+
+  <div class="mission">
+    <span class="mission-tag">ภารกิจ</span>
+    <p>ร้านขายแก้ว <b>เล็ก กลาง ใหญ่</b> ลูกค้าต้องได้รสชาติเท่ากันทุกแก้ว
+      ให้ขยายสูตรฐานโดย <b>รักษาความเข้มข้นเดิม</b></p>
+  </div>
+
+  <div class="layout">
+    <div class="panel">
+      <div class="card">
+        <h2 class="card-title">เลือกสูตรฐาน</h2>
+        <div id="base-empty" class="empty-box" hidden>
+          <p>ยังไม่มีสูตรที่บันทึกไว้ กลับไปขั้นที่ 1 เพื่อทดลองและบันทึกสูตรก่อนนะ</p>
+          <button type="button" class="btn btn-primary" data-goto="1">← กลับไปขั้นที่ 1</button>
+        </div>
+        <div id="base-pick">
+          <label for="base-select" class="sr-only">สูตรฐาน</label>
+          <select id="base-select"></select>
+          <div class="base-summary" id="base-summary"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title-row">
+          <h2 class="card-title">ขนาดแก้ว</h2>
+          <button type="button" class="btn btn-ghost btn-sm" id="reset-cups">คืนค่า 200/300/400</button>
+        </div>
+        <div id="cup-controls"></div>
+      </div>
+
+      <div class="card formula">
+        <h2 class="card-title">หลักการขยายสูตร</h2>
+        <p class="formula-line">ปริมาณส่วนผสมใหม่ = ปริมาณในสูตรฐาน × <span class="frac"><span>ปริมาตรแก้วใหม่</span><span>ปริมาตรสูตรฐาน</span></span></p>
+        <p class="hint">น้ำตาลและผงชาต้องคูณด้วย <b>ตัวคูณเดียวกัน</b> แล้วเติมน้ำจนได้ปริมาตรสุดท้ายของแก้วนั้น</p>
+      </div>
+
+      <div class="card toggles">
+        <label class="switch">
+          <input type="checkbox" id="show-work">
+          <span class="slider" aria-hidden="true"></span>
+          <span>แสดงวิธีคำนวณ</span>
+        </label>
+        <label class="switch">
+          <input type="checkbox" id="compare-noscale">
+          <span class="slider" aria-hidden="true"></span>
+          <span>เปรียบเทียบ: ถ้าใส่ส่วนผสม<b>เท่าเดิม</b> (ไม่ขยายสูตร)</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head">
+        <h2 id="stage2-title">แก้ว 3 ขนาด · ขยายสูตรแล้ว</h2>
+        <span class="badge" id="stage2-badge">ความเข้มข้นเท่ากันทุกแก้ว</span>
+      </div>
+      <svg id="scene2" class="scene" role="img" aria-label="ภาพแก้ว 3 ขนาดพร้อมมุมมองขยาย"></svg>
+      <ul class="legend">
+        <li><span class="lg-dot sugar"></span>น้ำตาล</li>
+        <li><span class="lg-dot tea"></span>ผงชา</li>
+        <li class="legend-note">ถ้าความเข้มข้นเท่ากัน สีและจำนวนจุดในวงกลมของทุกแก้วจะเท่ากัน</li>
+      </ul>
+      <div class="cup-cards" id="cup-cards"></div>
+    </div>
+  </div>
+
+  <section class="card wide">
+    <h2 class="card-title">ตารางสูตรสำหรับแก้ว 3 ขนาด</h2>
+    <div class="table-wrap">
+      <table class="data-table" id="scale-table">
+        <thead id="scale-head"></thead>
+        <tbody id="scale-body"></tbody>
+      </table>
+    </div>
+    <div id="work2" class="work-grid" hidden></div>
+  </section>
+
+  <section class="card wide think">
+    <h2 class="card-title">🤔 คำถามชวนคิด</h2>
+    <div class="questions" data-group="2"></div>
+  </section>
+</section>
+
+<!-- ================= ข้อสมมติของแบบจำลอง ================= -->
+<details class="card wide assumptions">
+  <summary>📘 ข้อสมมติทางวิทยาศาสตร์ของแบบจำลองนี้</summary>
+  <ul>
+    <li>ความเข้มข้นใช้หน่วย <b>ร้อยละโดยมวลต่อปริมาตร (% w/v)</b> =
+      มวลตัวละลาย (กรัม) ÷ ปริมาตรสารละลาย (มิลลิลิตร) × 100 หมายถึงมวลตัวละลายกี่กรัมในสารละลาย 100 มิลลิลิตร</li>
+    <li>ปริมาตรที่ใช้คำนวณคือ <b>ปริมาตรเครื่องดื่มสุดท้ายหลังผสม</b> (เติมน้ำจนได้ปริมาตรสุดท้าย) ไม่ใช่ปริมาตรน้ำที่เติม</li>
+    <li>ถือว่าผงชาเขียวสำเร็จรูปชนิดที่เลือก<b>ละลายน้ำได้หมด</b> และน้ำตาลละลายหมด ไม่มีตะกอน (เป็นสมมติฐานเพื่อการคำนวณ)</li>
+    <li>“ระดับหวาน 25%, 50%, 100%” คือ<b>สัดส่วนน้ำตาลเทียบกับสูตรอ้างอิง</b> (น้ำตาล 20 กรัม ต่อ 200 มิลลิลิตร) ไม่ใช่ความเข้มข้นร้อยละ</li>
+    <li>ความเข้มข้นใช้เป็น<b>ตัวแทนสำหรับเปรียบเทียบสูตร</b>เท่านั้น ไม่ได้วัดความหวานที่ลิ้นรับรู้จริง ซึ่งขึ้นกับอุณหภูมิ ความขม และส่วนผสมอื่นด้วย</li>
+    <li>ปริมาณน้ำที่ใช้จริงเป็น<b>ค่าประมาณ</b> โดยถือว่าของแข็งที่ละลาย 1 กรัมเพิ่มปริมาตรประมาณ 0.6 มิลลิลิตร (ใกล้เคียงน้ำตาลทราย) ในการชงจริงให้เติมน้ำจนถึงขีดปริมาตรที่ต้องการ</li>
+    <li>ภาพในวงกลมเป็นมุมมองขยายเชิงสัญลักษณ์ จำนวนจุดเป็นสัดส่วนกับความเข้มข้น ไม่ใช่จำนวนโมเลกุลจริง</li>
+  </ul>
+</details>
+
+</main>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="js/model.js"></script>
+<script src="js/visuals.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
