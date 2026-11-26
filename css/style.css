@@ -300,7 +300,10 @@ input[type="range"]:focus-visible { outline: 3px solid #b9d48f; outline-offset: 
 .gauge-scale { display: flex; justify-content: space-between; font-size: .75rem; color: var(--muted); margin-top: 2px; }
 
 /* ---------------- สลับโหมด ---------------- */
-.mode-wrap { display: flex; align-items: center; justify-content: center; }
+.mode-wrap { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; }
+.worksheet-links { display: inline-flex; gap: 6px; }
+.worksheet-links .btn { text-decoration: none; white-space: nowrap; }
+@media print { .worksheet-links { display: none; } }
 .mode-switch { display: inline-flex; padding: 4px; gap: 4px; background: #f1efe7; border-radius: 999px; border: 1px solid var(--line); }
 .mode-switch button {
   border: 0; background: transparent; padding: 7px 14px; border-radius: 999px; cursor: pointer;
