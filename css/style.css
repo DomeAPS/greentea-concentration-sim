@@ -698,3 +698,35 @@ body {
   .eq .pf-in { width: 78px; }
   .frac-bar { min-width: 80px; }
 }
+
+/* ---------------- สรุปผลสำหรับพิมพ์ ---------------- */
+.print-report { display: none; }
+@media print {
+  @page { size: A4; margin: 14mm 12mm; }
+  body { background: #fff !important; }
+  body > *:not(.print-report) { display: none !important; }
+  .print-report {
+    display: block; color: #000; font-family: var(--font-body); font-size: 11.5pt; line-height: 1.45;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .pr-head { border-bottom: 2px solid var(--matcha-dark); padding-bottom: 8px; margin-bottom: 10px; }
+  .pr-head h1 { font-size: 17pt; color: var(--matcha-dark); }
+  .pr-head p { margin: 2px 0 8px; font-size: 9.5pt; color: #444; }
+  .pr-id { display: flex; gap: 18px; flex-wrap: wrap; }
+  .pr-id span { display: inline-flex; align-items: flex-end; gap: 6px; }
+  .pr-id i { display: inline-block; width: 70px; border-bottom: 1px dotted #000; height: 1.1em; }
+  .pr-id i.w-lg { width: 230px; }
+  .pr-sec { margin-top: 12px; }
+  .pr-sec h2 { font-size: 13pt; color: var(--matcha-dark); background: var(--matcha-soft); padding: 4px 10px; border-radius: 6px; }
+  .pr-sec h2 small { font-weight: 500; color: #444; font-size: 10pt; }
+  .pr-sec h3 { font-size: 11.5pt; margin: 10px 0 4px; }
+  .pr-vars, .pr-base, .pr-formula { margin: 6px 0; }
+  .pr-formula { font-style: italic; color: #333; }
+  .pr-table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 10pt; page-break-inside: avoid; }
+  .pr-table th, .pr-table td { border: 1px solid #999; padding: 4px 6px; text-align: center; }
+  .pr-table th { background: #f1efe7; font-weight: 700; }
+  .pr-empty { color: #555; font-style: italic; }
+  .pr-q { page-break-inside: avoid; margin-bottom: 4px; }
+  .pr-q p { margin: 4px 0 0; }
+  .pr-lines span { display: block; border-bottom: 1px dotted #777; height: 1.7em; }
+}

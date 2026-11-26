@@ -33,6 +33,8 @@
     </div>
     <span class="mode-locked" id="mode-locked" hidden>✏️ โหมดฝึกคิดเอง <small>(ครูกำหนด)</small></span>
     <!-- ใบกิจกรรมแบบพิมพ์ สำหรับนักเรียนที่ไม่มีอุปกรณ์สื่อสาร -->
+    <button type="button" class="btn btn-primary btn-sm" id="print-btn"
+            title="พิมพ์สรุปผลการทดลองจากด่าน 1 และด่าน 2 รวมในเอกสารเดียว">🖨️ พิมพ์สรุปผล</button>
     <div class="worksheet-links" role="group" aria-label="ใบกิจกรรมสำหรับพิมพ์ (นักเรียนที่ไม่มีอุปกรณ์)">
       <a class="btn btn-soft btn-sm" href="docs/ใบกิจกรรม เรื่อง ร้านชาเขียวนักวิทย์.pdf" target="_blank" rel="noopener"
          title="เปิดใบกิจกรรม (PDF) เพื่อพิมพ์แจกนักเรียนที่ไม่มีอุปกรณ์สื่อสาร">🖨️ ใบกิจกรรม (PDF)</a>
@@ -377,6 +379,9 @@
 </details>
 
 </main>
+
+<!-- สรุปผลสำหรับพิมพ์ (สร้างโดย app.js ตอนกด “พิมพ์สรุปผล” — แสดงเฉพาะตอนพิมพ์) -->
+<section id="print-report" class="print-report" aria-hidden="true"></section>
 
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 

@@ -930,6 +930,110 @@
   }
 
   /* =========================================================
+   * พิมพ์สรุปผล (รวมด่าน 1 + ด่าน 2)
+   * ========================================================= */
+  const HOW_TEXT = { auto: 'คำนวณอัตโนมัติ', self: '✏️ คิดเองถูกต้อง', revealed: '👀 ดูเฉลย' };
+  const writeLines = (n) => `<div class="pr-lines">${'<span></span>'.repeat(n)}</div>`;
+
+  function buildReport() {
+    const now = new Date().toLocaleString('th-TH', { dateStyle: 'long', timeStyle: 'short' });
+    const modeText = isPractice() ? '✏️ ฝึกคิดเอง' : '⚡ คำนวณอัตโนมัติ';
+
+    /* ---- ด่าน 1 ---- */
+    const sorted = [...state.saved].sort((a, b) => a.level - b.level || a.sugar - b.sugar);
+    const doneLevels = M.SWEET_LEVELS.filter((l) => state.saved.some((s) => Math.abs(s.level - l) < 1e-9));
+    const s1Rows = sorted.map((s) => `<tr>
+        <td>${esc(s.label)}</td>
+        <td>${fmt(s.sugar)}</td><td>${fmt(s.tea)}</td><td>${s.volume}</td>
+        <td><b>${fmt(M.percentWV(s.sugar, s.volume))}%</b></td>
+        <td>${fmt(M.percentWV(s.tea, s.volume))}%</td>
+        <td>${HOW_TEXT[s.how] || '–'}</td></tr>`).join('');
+    const s1Table = sorted.length
+      ? `<table class="pr-table"><thead><tr>
+          <th>สูตร</th><th>น้ำตาล (g)</th><th>ผงชา (g)</th><th>ปริมาตรสุดท้าย (mL)</th>
+          <th>ความเข้มข้นน้ำตาล<br>(% มวล/ปริมาตร)</th><th>ความเข้มข้นผงชา<br>(% มวล/ปริมาตร)</th><th>วิธีได้คำตอบ</th>
+        </tr></thead><tbody>${s1Rows}</tbody></table>`
+      : '<p class="pr-empty">ยังไม่ได้บันทึกสูตรในด่าน 1</p>';
+
+    /* ---- ด่าน 2 ---- */
+    const base = getBase();
+    let s2 = '<p class="pr-empty">ยังไม่มีสูตรฐาน (ต้องบันทึกสูตรในด่าน 1 ก่อน)</p>';
+    if (base) {
+      syncP2(base);
+      const p = state.p2;
+      const practice = isPractice() && !p.revealed;
+      const rows = state.cups.map((c, i) => {
+        const r = M.scaleRecipe(base, c.volume);
+        let f, sg, te, sp, tp, status;
+        if (practice && !p.ok[i]) {
+          // ยังไม่ถูก: แสดงคำตอบที่นักเรียนกรอกไว้ (ถ้ามี)
+          const v = p.inputs[i] || {};
+          const show = (x) => (String(x ?? '').trim() === '' ? '……' : esc(x));
+          f = show(v.f); sg = show(v.s); te = show(v.t);
+          sp = tp = '……';
+          status = p.fb[i] ? '✗ ยังไม่ถูก' : 'ยังไม่ได้ตรวจ';
+        } else {
+          f = fmt(r.factor, 3); sg = fmt(r.sugar); te = fmt(r.tea);
+          sp = `<b>${fmt(r.sugarPct)}%</b>`; tp = `${fmt(r.teaPct)}%`;
+          status = !isPractice() ? 'คำนวณอัตโนมัติ' : p.ok[i] ? '✏️ คิดเองถูกต้อง' : '👀 ดูเฉลย';
+        }
+        return `<tr><td>${esc(c.name)}</td><td>${c.volume}</td><td>${f}</td><td>${sg}</td><td>${te}</td><td>${sp}</td><td>${tp}</td><td>${status}</td></tr>`;
+      }).join('');
+      s2 = `
+        <p class="pr-base">สูตรฐาน: <b>${esc(base.label)}</b> — น้ำตาล ${fmt(base.sugar)} g, ผงชา ${fmt(base.tea)} g
+          ในปริมาตรสุดท้าย ${base.volume} mL
+          (น้ำตาลเข้มข้น ${fmt(M.percentWV(base.sugar, base.volume))}%, ผงชาเข้มข้น ${fmt(M.percentWV(base.tea, base.volume))}%)</p>
+        <p class="pr-formula">ปริมาณส่วนผสมใหม่ = ปริมาณในสูตรฐาน × (ปริมาตรแก้วใหม่ ÷ ปริมาตรสูตรฐาน)</p>
+        <table class="pr-table"><thead><tr>
+          <th>แก้ว</th><th>ปริมาตร (mL)</th><th>ตัวคูณ</th><th>น้ำตาล (g)</th><th>ผงชา (g)</th>
+          <th>ความเข้มข้นน้ำตาล<br>(% มวล/ปริมาตร)</th><th>ความเข้มข้นผงชา<br>(% มวล/ปริมาตร)</th><th>วิธีได้คำตอบ</th>
+        </tr></thead><tbody>${rows}</tbody></table>`;
+    }
+
+    /* ---- คำถามชวนคิด (เว้นบรรทัดให้เขียนตอบ) ---- */
+    const qs = (g) => QUESTIONS[g].map((it, i) => `
+      <div class="pr-q"><p><b>${i + 1}.</b> ${esc(it.q)}</p>${writeLines(2)}</div>`).join('');
+
+    $('#print-report').innerHTML = `
+      <header class="pr-head">
+        <h1>สรุปผลการทดลอง: ร้านชาเขียวนักวิทย์</h1>
+        <p>ความเข้มข้นของสารละลาย (ร้อยละโดยมวลต่อปริมาตร) · โหมด: ${modeText} · พิมพ์เมื่อ ${esc(now)}</p>
+        <div class="pr-id">
+          <span>ชื่อ–สกุล <i class="w-lg"></i></span>
+          <span>ชั้น <i></i></span>
+          <span>เลขที่ <i></i></span>
+        </div>
+      </header>
+
+      <section class="pr-sec">
+        <h2>ด่าน 1 · ทดลองสูตร <small>(บันทึกครบ ${doneLevels.length}/${M.SWEET_LEVELS.length} ระดับ)</small></h2>
+        <p class="pr-vars"><b>ตัวแปรต้น:</b> ปริมาณน้ำตาล · <b>ตัวแปรตาม:</b> ความเข้มข้นของน้ำตาล ·
+          <b>ตัวแปรควบคุม:</b> ผงชาเขียว ${M.STAGE1_TEA} กรัม และปริมาตรเครื่องดื่ม ${M.STAGE1_VOLUME} cm³</p>
+        ${s1Table}
+        <h3>คำถามชวนคิด</h3>
+        ${qs(1)}
+      </section>
+
+      <section class="pr-sec">
+        <h2>ด่าน 2 · ขยายสูตร</h2>
+        ${s2}
+        <h3>คำถามชวนคิด</h3>
+        ${qs(2)}
+      </section>
+
+      <section class="pr-sec">
+        <h2>สรุปผลการทดลอง</h2>
+        ${writeLines(4)}
+      </section>`;
+  }
+
+  function printReport() {
+    if (!state.saved.length) toast('ยังไม่มีสูตรที่บันทึก — สรุปผลจะมีเฉพาะหัวข้อและคำถาม');
+    buildReport();
+    window.print();
+  }
+
+  /* =========================================================
    * Events
    * ========================================================= */
   function bindEvents() {
@@ -949,6 +1053,9 @@
     $$('.level-btn').forEach((b) => b.addEventListener('click', () => setTarget(Number(b.dataset.level))));
 
     $('#save-btn').addEventListener('click', saveRecipe);
+    $('#print-btn').addEventListener('click', printReport);
+    // Ctrl+P / เมนูพิมพ์ของเบราว์เซอร์ ก็ได้สรุปผลล่าสุดเช่นกัน
+    window.addEventListener('beforeprint', buildReport);
 
     // สลับโหมด
     $$('#mode-switch [data-mode]').forEach((b) => b.addEventListener('click', () => {
